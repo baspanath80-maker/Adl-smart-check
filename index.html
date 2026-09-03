@@ -1,11 +1,19 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="th">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ADL Smart Assessment - Don Jan Hospital</title>
+    
+    <!-- PWA & Favicon Config -->
+    <link rel="icon" type="image/png" sizes="192x192" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0288d1">
+
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
     <style>
         :root {
             --primary: #0288d1;
@@ -48,9 +56,9 @@
 
 <div class="container">
     <div class="header-ui">
-        <i class="fas fa-clipboard-check"></i>
-        <h1> ADL Smart Check</h1>
-        <p> โรงพยาบาลดอนจาน จังหวัดกาฬสินธุ์</p>
+        <i class="fas fa-clipboard-check fa-2x" style="margin-bottom: 8px;"></i>
+        <h1 style="margin: 0; font-size: 1.8rem;">ADL Smart Check</h1>
+        <p style="margin: 5px 0 0 0;">โรงพยาบาลดอนจาน จังหวัดกาฬสินธุ์</p>
     </div>
 
     <div class="info-card">
@@ -210,7 +218,7 @@
                 </table>
                 <p style="font-size: 11px; margin-top: 10px;">หมายเหตุ: คะแนน ADL 11 บ่งชี้กลุ่มพึ่งพิง (ติดบ้าน/ติดเตียง) ตามเกณฑ์ TA/กระทรวงสาธารณสุข ควรประเมินเพิ่มเติม.</p>
                 <div class="footer">
-                    <p style="font-size: 11px; https://sites.google.com/view/adl-check/%E0%B8%AB%E0%B8%99%E0%B8%B2%E0%B9%81%E0%B8%A3%E0%B8%81color: #666;">ผู้สร้างและพัฒนาโปรแกรม: พว.ปนัทธพล จิตนาเรียง รพ.ดอนจาน</p>
+                    <p style="font-size: 11px; color: #666;">ผู้สร้างและพัฒนาโปรแกรม: พว.ปนัทธพล จิตนาเรียง รพ.ดอนจาน</p>
                     <p style="margin-top: 20px;">(ลงชื่อประเมิน).......................................................</p>
                 </div>
                 <script>window.onload = function() { window.print(); };<\/script>
@@ -224,3 +232,4 @@
 </script>
 </body>
 </html>
+
