@@ -1,7 +1,7 @@
 {
-  "name": "ADL Smart Assessment -  Donchan Hospital",
+  "name": "ADL Smart Check",
   "short_name": "ADL Smart",
-  "description": "ระบบประเมิน ADL โรงพยาบาลดอนจาน",
+  "description": "ระบบประเมิน ADL ",
   "lang": "th",
   "start_url": "./",
   "scope": "./",
