@@ -11,13 +11,13 @@
   "theme_color": "#0288d1",
   "icons": [
     {
-      "src": "./1920.png",
+      "src": "./19.png",
       "sizes": "1920x1920",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./5120.png",
+      "src": "./5.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
