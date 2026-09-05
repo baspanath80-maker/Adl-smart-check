@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>ADL Smart Assessment - Don Jan Hospital</title>
+    <title>ADL Smart Check </title>
 
     <!-- =====================================================
          PWA & APP ICON
@@ -378,10 +378,6 @@
             ADL Smart Check
         </h1>
 
-        <p>
-            โรงพยาบาลดอนจาน จังหวัดกาฬสินธุ์
-        </p>
-
     </div>
 
 
@@ -482,8 +478,7 @@
         <br><br>
 
         พัฒนาโดย
-        พว.ปนัทธพล จิตนาเรียง
-        รพ.ดอนจาน
+        พว.ปนัทธพล จิตนาเรียง รพ.ดอนจาน จ.กาฬสินธุ์
 
     </footer>
 
@@ -939,13 +934,6 @@ body {
     margin-bottom:10px;
 }
 
-.header-logo {
-    width:70px;
-    height:70px;
-    object-fit:contain;
-    margin-bottom:5px;
-}
-
 .header h2 {
     margin:0;
     font-size:20px;
@@ -1008,18 +996,11 @@ p {
 
 <div class="header">
 
-<img
-    src="${location.origin}${location.pathname.replace(/[^\/]*$/, '')}180.png"
-    class="header-logo"
-    alt="ADL Smart"
->
-
 <h2>
-    โรงพยาบาลดอนจาน
+    รายงานผลการประเมินคัดกรองผู้ป่วย LTC
 </h2>
 
 <h3>
-    รายงานผลการประเมินคัดกรองผู้ป่วย LTC
     (Long-Term Care)
 </h3>
 
@@ -1235,7 +1216,6 @@ ${detailRows}
 
 ผู้สร้างและพัฒนาโปรแกรม:
 พว.ปนัทธพล จิตนาเรียง
-รพ.ดอนจาน
 
 </p>
 
@@ -1449,7 +1429,7 @@ window.onload = function() {
         else {
 
             text.innerHTML =
-                '<b>เพิ่ม ADL Smart ลงหน้าจอ</b><br>' +
+                '<b>เพิ่ม ADL Smart Check ลงหน้าจอ</b><br>' +
                 'เปิดใช้งานได้ง่ายจากไอคอน';
 
 
@@ -1480,8 +1460,8 @@ window.onload = function() {
 
                     <li>
                         จะได้ไอคอน
-                        <b>ADL Smart</b>
-                        พร้อมโลโก้
+                        <b>ADL Smart Check</b>
+                        
                     </li>
 
                 </ol>
@@ -1535,3 +1515,4 @@ if ('serviceWorker' in navigator) {
 
 </body>
 </html>
+
