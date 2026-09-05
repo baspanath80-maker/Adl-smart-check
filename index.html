@@ -1,235 +1,1305 @@
-<!DOCTYPE html>
-<html lang="th">
+<!DOCTYPE html><html lang="th">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ADL Smart Assessment - Don Jan Hospital</title>
-    
-    <!-- PWA & Favicon Config -->
-    <link rel="icon" type="image/png" sizes="192x192" href="icon.png">
-    <link rel="apple-touch-icon" href="icon.png">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0288d1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>ADL Smart Assessment - Don Jan Hospital</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    
-    <style>
-        :root {
-            --primary: #0288d1;
-            --primary-dark: #01579b;
-            --success: #2e7d32;
-            --warning: #ed6c02;
-            --danger: #d32f2f;
-            --bg-body: #f4f7f9;
+<!-- =========================
+     PWA & ICON CONFIG
+========================== -->
+
+<!-- Browser Favicon -->
+<link rel="icon" type="image/png" sizes="180x180" href="./180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="./512.png">
+
+<!-- iPhone / iPad Home Screen -->
+<link rel="apple-touch-icon" sizes="180x180" href="./180.png">
+
+<!-- PWA Manifest -->
+<link rel="manifest" href="./manifest.json">
+
+<!-- Theme -->
+<meta name="theme-color" content="#0288d1">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ADL Smart">
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet" />
+
+<!-- Font Awesome -->
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+    :root {
+        --primary: #0288d1;
+        --primary-dark: #01579b;
+        --success: #2e7d32;
+        --warning: #ed6c02;
+        --danger: #d32f2f;
+        --bg-body: #f4f7f9;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Sarabun', sans-serif;
+        background-color: var(--bg-body);
+        margin: 0;
+        padding: 0;
+        color: #333;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 10px auto;
+        padding: 0 15px;
+    }
+
+    .header-ui {
+        background: linear-gradient(
+            135deg,
+            var(--primary-dark),
+            var(--primary)
+        );
+        color: white;
+        padding: 25px;
+        border-radius: 15px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    /* LOGO */
+    .app-logo {
+        width: 90px;
+        height: 90px;
+        object-fit: contain;
+        display: block;
+        margin: 0 auto 10px;
+        border-radius: 20px;
+    }
+
+    .header-ui h1 {
+        margin: 0;
+        font-size: 1.8rem;
+    }
+
+    .header-ui p {
+        margin: 5px 0 0 0;
+    }
+
+    .info-card {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .field {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .field label {
+        display: block;
+        font-weight: 700;
+        margin-bottom: 5px;
+        color: var(--primary-dark);
+    }
+
+    .field input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-family: inherit;
+    }
+
+    .q-card {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .q-header {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--primary-dark);
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .options-grid {
+        display: grid;
+        grid-template-columns: repeat(
+            auto-fit,
+            minmax(170px, 1fr)
+        );
+        gap: 10px;
+    }
+
+    .opt-item {
+        position: relative;
+        cursor: pointer;
+        border-radius: 10px;
+        padding: 15px 10px;
+        text-align: center;
+        transition: all 0.2s ease;
+        background: #f8f9fa;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .opt-item input {
+        position: absolute;
+        opacity: 0;
+    }
+
+    .opt-item i {
+        font-size: 2rem;
+        color: #90a4ae;
+    }
+
+    .opt-item.active {
+        background-color: var(--primary) !important;
+        color: white !important;
+    }
+
+    .opt-item.active i,
+    .opt-item.active span {
+        color: white !important;
+    }
+
+    .btn-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 30px 0;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 15px;
+        border: none;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .btn-calc {
+        background: var(--primary-dark);
+        color: white;
+    }
+
+    .btn-print {
+        background: var(--success);
+        color: white;
+        display: none;
+    }
+
+    .btn-reset {
+        background: #b0bec5;
+        color: white;
+    }
+
+    #result-summary {
+        margin-top: 20px;
+        display: none;
+    }
+
+    .install-box {
+        display: none;
+        background: white;
+        border-radius: 15px;
+        padding: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,.08);
+        border: 1px solid #e0e0e0;
+    }
+
+    .install-box.show {
+        display: block;
+    }
+
+    .install-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .install-logo {
+        width: 52px;
+        height: 52px;
+        border-radius: 12px;
+        object-fit: contain;
+    }
+
+    .install-text {
+        flex: 1;
+        font-size: 13px;
+        line-height: 1.4;
+    }
+
+    .install-text b {
+        color: var(--primary-dark);
+    }
+
+    .install-btn {
+        border: none;
+        background: var(--primary);
+        color: white;
+        border-radius: 10px;
+        padding: 9px 13px;
+        font-family: inherit;
+        font-weight: 700;
+    }
+
+    .install-steps {
+        display: none;
+        margin-top: 10px;
+        font-size: 13px;
+        line-height: 1.7;
+        color: #555;
+    }
+
+    .install-steps.show {
+        display: block;
+    }
+
+    footer {
+        text-align: center;
+        font-size: 11px;
+        color: #777;
+        padding: 20px 0 30px;
+    }
+
+    @media(max-width:500px) {
+        .header-ui {
+            padding: 20px 15px;
         }
 
-        body { font-family: 'Sarabun', sans-serif; background-color: var(--bg-body); margin: 0; padding: 0; color: #333; }
-        .container { max-width: 900px; margin: 10px auto; padding: 0 15px; }
+        .app-logo {
+            width: 75px;
+            height: 75px;
+        }
 
-        .header-ui { background: linear-gradient(135deg, var(--primary-dark), var(--primary)); color: white; padding: 25px; border-radius: 15px; text-align: center; margin-bottom: 20px; }
-        .info-card { background: white; padding: 20px; border-radius: 12px; display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .field { flex: 1; min-width: 200px; }
-        .field label { display: block; font-weight: 700; margin-bottom: 5px; color: var(--primary-dark); }
-        .field input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; box-sizing: border-box; }
-        
-        .q-card { background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .q-header { font-size: 1.1rem; font-weight: 700; color: var(--primary-dark); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .header-ui h1 {
+            font-size: 1.5rem;
+        }
+    }
+</style>
 
-        .options-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
-        .opt-item { position: relative; cursor: pointer; border-radius: 10px; padding: 15px 10px; text-align: center; transition: all 0.2s ease; background: #f8f9fa; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-        .opt-item input { position: absolute; opacity: 0; }
-        .opt-item i { font-size: 2rem; color: #90a4ae; }
-        .opt-item.active { background-color: var(--primary) !important; color: white !important; }
-        .opt-item.active i, .opt-item.active span { color: white !important; }
+</head><body><div class="container"><!-- INSTALL BANNER -->
+<div class="install-box" id="installBox">
+    <div class="install-row">
 
-        .btn-group { display: flex; flex-direction: column; gap: 10px; margin: 30px 0; }
-        .btn { width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: 700; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .btn-calc { background: var(--primary-dark); color: white; }
-        .btn-print { background: var(--success); color: white; display: none; }
-        .btn-reset { background: #b0bec5; color: white; }
+        <img
+            src="./192.png"
+            class="install-logo"
+            alt="ADL Smart">
 
-        #result-summary { margin-top: 20px; display: none; }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <div class="header-ui">
-        <i class="fas fa-clipboard-check fa-2x" style="margin-bottom: 8px;"></i>
-        <h1 style="margin: 0; font-size: 1.8rem;">ADL Smart Check</h1>
-        <p style="margin: 5px 0 0 0;">โรงพยาบาลดอนจาน จังหวัดกาฬสินธุ์</p>
-    </div>
-
-    <div class="info-card">
-        <div class="field">
-            <label>ชื่อผู้รับบริการ</label>
-            <input type="text" id="patientName" placeholder="ระบุชื่อ-นามสกุล">
+        <div class="install-text" id="installText">
+            <b>ADL Smart</b><br>
+            เพิ่มไว้ที่หน้าจอหลักเพื่อเปิดใช้งานได้ง่าย
         </div>
-        <div class="field">
-            <label>วันที่ประเมิน</label>
-            <input type="date" id="evalDate">
-        </div>
+
+        <button
+            class="install-btn"
+            id="installBtn">
+            วิธีติดตั้ง
+        </button>
+
     </div>
 
-    <div id="quiz-container"></div>
-
-    <div class="btn-group">
-        <button class="btn btn-calc" onclick="processResult()"><i class="fas fa-calculator"></i> คำนวณคะแนนและแปลผล</button>
-        <button id="btnPrint" class="btn btn-print" onclick="generatePDF()"><i class="fas fa-file-pdf"></i> แสดงผลรายงาน (เพื่อบันทึก PDF)</button>
-        <button class="btn btn-reset" onclick="location.reload()"><i class="fas fa-undo"></i> ล้างข้อมูล</button>
+    <div
+        class="install-steps"
+        id="installSteps">
     </div>
-
-    <div id="result-summary"></div>
 </div>
 
-<script>
-    const questions = [
-        { id: 1, title: "รับประทานอาหาร", icon: "fa-utensils", opts: [{v:0,t:"ทำเองไม่ได้",i:"fa-times-circle"},{v:1,t:"ต้องการคนช่วย",i:"fa-hand-holding-heart"},{v:2,t:"ทำเองได้ปกติ",i:"fa-utensils"}] },
-        { id: 2, title: "การล้างหน้า หวีผม แปรงฟัน โกนหนวด", icon: "fa-sink", opts: [{v:0,t:"ต้องการคนช่วย",i:"fa-hand-holding-medical"},{v:1,t:"ทำเองได้ปกติ",i:"fa-check-circle"}] },
-        { id: 3, title: "ลุกนั่งจากที่นอน หรือจากเตียงไปยังเก้าอี้", icon: "fa-bed", opts: [{v:0,t:"นั่งไม่ได้",i:"fa-procedures"},{v:1,t:"คนช่วย 1-2 คน",i:"fa-users-cog"},{v:2,t:"ช่วยเล็กน้อย",i:"fa-user-nurse"},{v:3,t:"ทำได้เองปกติ",i:"fa-walking"}] },
-        { id: 4, title: "การใช้ห้องน้ำ", icon: "fa-toilet", opts: [{v:0,t:"ช่วยไม่ได้",i:"fa-wheelchair"},{v:1,t:"ทำได้บ้าง",i:"fa-toilet-paper"},{v:2,t:"ปกติ",i:"fa-restroom"}] },
-        { id: 5, title: "การเคลื่อนที่ภายในห้องหรือบ้าน", icon: "fa-home", opts: [{v:0,t:"ไปไหนไม่ได้",i:"fa-ban"},{v:1,t:"ใช้รถเข็น",i:"fa-wheelchair"},{v:2,t:"มีคนช่วยพยุง",i:"fa-user-friends"},{v:3,t:"เดินได้เองปกติ",i:"fa-shoe-prints"}] },
-        { id: 6, title: "การสวมใส่เสื้อผ้า", icon: "fa-user-tie", opts: [{v:0,t:"ต้องใส่ให้",i:"fa-times-circle"},{v:1,t:"ทำได้ครึ่งหนึ่ง",i:"fa-tshirt"},{v:2,t:"ปกติ",i:"fa-user-check"}] },
-        { id: 7, title: "การขึ้นลงบันได 1 ชั้น", icon: "fa-stairs", opts: [{v:0,t:"ทำไม่ได้",i:"fa-times-circle"},{v:1,t:"ต้องการคนช่วย",i:"fa-hand-holding"},{v:2,t:"ทำได้เองปกติ",i:"fa-arrow-up"}] },
-        { id: 8, title: "การอาบน้ำ", icon: "fa-shower", opts: [{v:0,t:"คนทำให้",i:"fa-soap"},{v:1,t:"ทำเองได้",i:"fa-shower"}] },
-        { id: 9, title: "การกลั้นการถ่ายอุจจาระ", icon: "fa-poop", opts: [{v:0,t:"ไม่ได้เลย",i:"fa-exclamation-triangle"},{v:1,t:"ได้บางครั้ง",i:"fa-clock"},{v:2,t:"ปกติ",i:"fa-check"}] },
-        { id: 10, title: "การกลั้นปัสสาวะ", icon: "fa-tint", opts: [{v:0,t:"ไม่ได้เลย",i:"fa-exclamation-circle"},{v:1,t:"ได้บางครั้ง",i:"fa-hourglass-half"},{v:2,t:"ปกติ",i:"fa-tint-slash"}] }
-    ];
 
-    const quizArea = document.getElementById('quiz-container');
+<!-- HEADER -->
+
+<div class="header-ui">
+
+    <img
+        src="./192.png"
+        class="app-logo"
+        alt="ADL Smart Check">
+
+    <h1>
+        ADL Smart Check
+    </h1>
+
+    <p>
+        โรงพยาบาลดอนจาน จังหวัดกาฬสินธุ์
+    </p>
+
+</div>
+
+
+<!-- PATIENT INFORMATION -->
+
+<div class="info-card">
+
+    <div class="field">
+
+        <label>
+            ชื่อผู้รับบริการ
+        </label>
+
+        <input
+            type="text"
+            id="patientName"
+            placeholder="ระบุชื่อ-นามสกุล">
+
+    </div>
+
+    <div class="field">
+
+        <label>
+            วันที่ประเมิน
+        </label>
+
+        <input
+            type="date"
+            id="evalDate">
+
+    </div>
+
+</div>
+
+
+<!-- QUESTIONS -->
+
+<div id="quiz-container"></div>
+
+
+<!-- BUTTONS -->
+
+<div class="btn-group">
+
+    <button
+        class="btn btn-calc"
+        onclick="processResult()">
+
+        <i class="fas fa-calculator"></i>
+
+        คำนวณคะแนนและแปลผล
+
+    </button>
+
+
+    <button
+        id="btnPrint"
+        class="btn btn-print"
+        onclick="generatePDF()">
+
+        <i class="fas fa-file-pdf"></i>
+
+        แสดงผลรายงาน
+        (เพื่อบันทึก PDF)
+
+    </button>
+
+
+    <button
+        class="btn btn-reset"
+        onclick="location.reload()">
+
+        <i class="fas fa-undo"></i>
+
+        ล้างข้อมูล
+
+    </button>
+
+</div>
+
+
+<div id="result-summary"></div>
+
+
+<footer>
+
+    <b>ADL Smart Check</b><br>
+
+    ระบบประเมินความสามารถในการทำกิจวัตรประจำวัน
+    ADL สำหรับงาน Long-Term Care
+
+    <br><br>
+
+    พัฒนาโดย
+    พว.ปนัทธพล จิตนาเรียง
+    รพ.ดอนจาน
+
+</footer>
+
+</div><script>
+
+/* =====================================================
+   ADL QUESTIONS
+===================================================== */
+
+const questions = [
+
+    {
+        id:1,
+        title:"รับประทานอาหาร",
+        icon:"fa-utensils",
+        opts:[
+            {v:0,t:"ทำเองไม่ได้",i:"fa-times-circle"},
+            {v:1,t:"ต้องการคนช่วย",i:"fa-hand-holding-heart"},
+            {v:2,t:"ทำเองได้ปกติ",i:"fa-utensils"}
+        ]
+    },
+
+    {
+        id:2,
+        title:"การล้างหน้า หวีผม แปรงฟัน โกนหนวด",
+        icon:"fa-sink",
+        opts:[
+            {v:0,t:"ต้องการคนช่วย",i:"fa-hand-holding-medical"},
+            {v:1,t:"ทำเองได้ปกติ",i:"fa-check-circle"}
+        ]
+    },
+
+    {
+        id:3,
+        title:"ลุกนั่งจากที่นอน หรือจากเตียงไปยังเก้าอี้",
+        icon:"fa-bed",
+        opts:[
+            {v:0,t:"นั่งไม่ได้",i:"fa-procedures"},
+            {v:1,t:"คนช่วย 1-2 คน",i:"fa-users-cog"},
+            {v:2,t:"ช่วยเล็กน้อย",i:"fa-user-nurse"},
+            {v:3,t:"ทำได้เองปกติ",i:"fa-walking"}
+        ]
+    },
+
+    {
+        id:4,
+        title:"การใช้ห้องน้ำ",
+        icon:"fa-toilet",
+        opts:[
+            {v:0,t:"ช่วยไม่ได้",i:"fa-wheelchair"},
+            {v:1,t:"ทำได้บ้าง",i:"fa-toilet-paper"},
+            {v:2,t:"ปกติ",i:"fa-restroom"}
+        ]
+    },
+
+    {
+        id:5,
+        title:"การเคลื่อนที่ภายในห้องหรือบ้าน",
+        icon:"fa-home",
+        opts:[
+            {v:0,t:"ไปไหนไม่ได้",i:"fa-ban"},
+            {v:1,t:"ใช้รถเข็น",i:"fa-wheelchair"},
+            {v:2,t:"มีคนช่วยพยุง",i:"fa-user-friends"},
+            {v:3,t:"เดินได้เองปกติ",i:"fa-shoe-prints"}
+        ]
+    },
+
+    {
+        id:6,
+        title:"การสวมใส่เสื้อผ้า",
+        icon:"fa-user-tie",
+        opts:[
+            {v:0,t:"ต้องใส่ให้",i:"fa-times-circle"},
+            {v:1,t:"ทำได้ครึ่งหนึ่ง",i:"fa-tshirt"},
+            {v:2,t:"ปกติ",i:"fa-user-check"}
+        ]
+    },
+
+    {
+        id:7,
+        title:"การขึ้นลงบันได 1 ชั้น",
+        icon:"fa-stairs",
+        opts:[
+            {v:0,t:"ทำไม่ได้",i:"fa-times-circle"},
+            {v:1,t:"ต้องการคนช่วย",i:"fa-hand-holding"},
+            {v:2,t:"ทำได้เองปกติ",i:"fa-arrow-up"}
+        ]
+    },
+
+    {
+        id:8,
+        title:"การอาบน้ำ",
+        icon:"fa-shower",
+        opts:[
+            {v:0,t:"คนทำให้",i:"fa-soap"},
+            {v:1,t:"ทำเองได้",i:"fa-shower"}
+        ]
+    },
+
+    {
+        id:9,
+        title:"การกลั้นการถ่ายอุจจาระ",
+        icon:"fa-poop",
+        opts:[
+            {v:0,t:"ไม่ได้เลย",i:"fa-exclamation-triangle"},
+            {v:1,t:"ได้บางครั้ง",i:"fa-clock"},
+            {v:2,t:"ปกติ",i:"fa-check"}
+        ]
+    },
+
+    {
+        id:10,
+        title:"การกลั้นปัสสาวะ",
+        icon:"fa-tint",
+        opts:[
+            {v:0,t:"ไม่ได้เลย",i:"fa-exclamation-circle"},
+            {v:1,t:"ได้บางครั้ง",i:"fa-hourglass-half"},
+            {v:2,t:"ปกติ",i:"fa-tint-slash"}
+        ]
+    }
+
+];
+
+
+/* =====================================================
+   CREATE QUESTIONS
+===================================================== */
+
+const quizArea =
+    document.getElementById('quiz-container');
+
+questions.forEach(q => {
+
+    const div =
+        document.createElement('div');
+
+    div.className = 'q-card';
+
+    div.innerHTML = `
+
+        <div class="q-header">
+
+            <i class="fas ${q.icon}"></i>
+
+            ${q.id}. ${q.title}
+
+        </div>
+
+        <div class="options-grid">
+
+            ${q.opts.map(o => `
+
+                <label
+                    class="opt-item"
+                    id="opt-${q.id}-${o.v}">
+
+                    <input
+                        type="radio"
+                        name="adl${q.id}"
+                        value="${o.v}"
+                        onchange="markActive(${q.id}, ${o.v})">
+
+                    <i class="fas ${o.i}"></i>
+
+                    <span>${o.t}</span>
+
+                </label>
+
+            `).join('')}
+
+        </div>
+    `;
+
+    quizArea.appendChild(div);
+
+});
+
+
+/* =====================================================
+   DATE
+===================================================== */
+
+document
+    .getElementById('evalDate')
+    .valueAsDate = new Date();
+
+
+/* =====================================================
+   ACTIVE OPTION
+===================================================== */
+
+function markActive(qId, val) {
+
+    document
+        .querySelectorAll(`input[name="adl${qId}"]`)
+        .forEach(i => {
+
+            document
+                .getElementById(
+                    `opt-${qId}-${i.value}`
+                )
+                .classList.remove('active');
+
+        });
+
+    document
+        .getElementById(`opt-${qId}-${val}`)
+        .classList.add('active');
+
+}
+
+
+/* =====================================================
+   CALCULATE
+===================================================== */
+
+function processResult() {
+
+    const name =
+        document
+            .getElementById('patientName')
+            .value.trim();
+
+    if (!name) {
+
+        alert('กรุณาระบุชื่อผู้ป่วย');
+
+        return;
+    }
+
+    let score = 0;
+    let incomplete = false;
+
     questions.forEach(q => {
-        const div = document.createElement('div');
-        div.className = 'q-card';
-        div.innerHTML = `
-            <div class="q-header"><i class="fas ${q.icon}"></i> ${q.id}. ${q.title}</div>
-            <div class="options-grid">
-                ${q.opts.map(o => `
-                    <label class="opt-item" id="opt-${q.id}-${o.v}">
-                        <input type="radio" name="adl${q.id}" value="${o.v}" onchange="markActive(${q.id}, ${o.v})">
-                        <i class="fas ${o.i}"></i>
-                        <span>${o.t}</span>
-                    </label>
-                `).join('')}
-            </div>
-        `;
-        quizArea.appendChild(div);
-    });
 
-    document.getElementById('evalDate').valueAsDate = new Date();
+        const pick =
+            document.querySelector(
+                `input[name="adl${q.id}"]:checked`
+            );
 
-    function markActive(qId, val) {
-        document.querySelectorAll(`input[name="adl${qId}"]`).forEach(i => {
-            document.getElementById(`opt-${qId}-${i.value}`).classList.remove('active');
-        });
-        document.getElementById(`opt-${qId}-${val}`).classList.add('active');
-    }
+        if (!pick) {
 
-    function processResult() {
-        const name = document.getElementById('patientName').value;
-        if (!name) { alert('กรุณาระบุชื่อผู้ป่วย'); return; }
+            incomplete = true;
 
-        let score = 0; let incomplete = false;
-        questions.forEach(q => {
-            const pick = document.querySelector(`input[name="adl${q.id}"]:checked`);
-            if (!pick) incomplete = true; else score += parseInt(pick.value);
-        });
+        } else {
 
-        if (incomplete) { alert('กรุณาประเมินให้ครบถ้วน'); return; }
+            score +=
+                parseInt(pick.value);
 
-        document.getElementById('result-summary').style.display = 'block';
-        document.getElementById('result-summary').innerHTML = `<div class="info-card" style="border-left: 8px solid var(--primary-dark)">
-            <strong>คำนวณเรียบร้อย:</strong> คะแนนรวม ${score}/20 (กดแสดงผลรายงานเพื่อพิมพ์ 1 หน้า)
-        </div>`;
-        document.getElementById('btnPrint').style.display = 'flex';
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    }
-
-    function generatePDF() {
-        const name = document.getElementById('patientName').value;
-        const dateRaw = document.getElementById('evalDate').value;
-        const d = new Date(dateRaw);
-        const thaiDate = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()+543}`;
-
-        let score = 0; let detailRows = '';
-        questions.forEach(q => {
-            const v = parseInt(document.querySelector(`input[name="adl${q.id}"]:checked`).value);
-            score += v;
-            detailRows += `<tr><td>${q.id}</td><td style="text-align:left">${q.title}</td><td>${v}</td></tr>`;
-        });
-
-        let status = "", color = "", bgColor = "", ltcText = "";
-        if (score >= 12) { 
-            status = "ติดสังคม"; color = "#2e7d32"; bgColor = "#e8f5e9"; 
-            ltcText = "แนะนำให้รักษาสุขภาพและดำรงชีวิตปกติ";
-        } else if (score >= 5) { 
-            status = "ติดบ้าน"; color = "#ed6c02"; bgColor = "#fff3e0"; 
-            ltcText = "อยู่ในเกณฑ์เข้า LTC แนะนำส่งต่อศูนย์ดูแลต่อเนื่อง COC หรือดูแลระยะยาว";
-        } else { 
-            status = "ติดเตียง"; color = "#d32f2f"; bgColor = "#ffebee"; 
-            ltcText = "ภาวะพึ่งพิงสูง แนะนำส่งต่อศูนย์ดูแลต่อเนื่อง COC หรือดูแลระยะยาว";
         }
 
-        const reportHTML = `
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <title>รายงาน ADL - ${name}</title>
-                <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap" rel="stylesheet" />
-                <style>
-                    @page { size: A4; margin: 1.5cm; }
-                    body { font-family: 'Sarabun', sans-serif; padding: 0; line-height: 1.3; color: #000; font-size: 14px; }
-                    .header { text-align: center; margin-bottom: 10px; }
-                    .header h2 { margin: 0; font-size: 20px; }
-                    .header h3 { margin: 2px 0; font-size: 16px; }
-                    .summary-bar { border-left: 5px solid ${color}; background: ${bgColor}; padding: 10px; margin: 10px 0; border-radius: 4px; font-weight: bold; font-size: 16px; color: ${color}; }
-                    .table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 13px; }
-                    .table th, .table td { border: 1px solid #000; padding: 4px 8px; text-align: center; }
-                    .table th { background: #f2f2f2; }
-                    .footer { margin-top: 25px; text-align: right; font-size: 13px; }
-                    h4 { margin: 10px 0 5px 0; font-size: 15px; }
-                    p { margin: 4px 0; }
-                </style>
-            </head>
-            <body>
-                <div class="header">
-                    <h2>โรงพยาบาลดอนจาน</h2>
-                    <h3>รายงานผลการประเมินคัดกรองผู้ป่วย LTC (Long-Term Care)</h3>
-                </div>
-                <p><b>ชื่อผู้ป่วย:</b> ${name} &nbsp;&nbsp;&nbsp; <b>วันที่ประเมิน:</b> ${thaiDate}</p>
-                <p><b>คะแนน ADL (10 ข้อ):</b> <span style="font-size: 1.1em; font-weight: bold;">${score}</span>/20</p>
-                <p><b>แปลผล:</b> <span style="color: ${color}; font-weight: bold;">${ltcText}</span></p>
-                <div class="summary-bar">สรุป: ภาวะพึ่งพา (${status})</div>
+    });
 
-                <h4>เกณฑ์การแปลผลคะแนน ADL (Barthel Index 10 ข้อ)</h4>
-                <table class="table">
-                    <thead><tr><th>คะแนนรวม</th><th>ระดับภาวะพึ่งพา</th><th>การแปลผล</th></tr></thead>
-                    <tbody>
-                        <tr><td>12 - 20</td><td>ระดับ 0 (ติดสังคม)</td><td style="text-align:left">ไม่มีภาวะพึ่งพา (สามารถดำรงชีวิตในสังคมได้)</td></tr>
-                        <tr><td>5 - 11</td><td>ระดับ 1-3 (ติดบ้าน)</td><td style="text-align:left">ภาวะพึ่งพารุนแรงถึงปานกลาง (ต้องอยู่ติดบ้านเป็นส่วนใหญ่)</td></tr>
-                        <tr><td>0 - 4</td><td>ระดับ 4 (ติดเตียง)</td><td style="text-align:left">ภาวะพึ่งพิง (ต้องอยู่ติดเตียงตลอดเวลา)</td></tr>
-                    </tbody>
-                </table>
 
-                <h4>รายละเอียดคะแนน ADL 10 ข้อ</h4>
-                <table class="table">
-                    <thead><tr><th width="10%">ข้อที่</th><th style="text-align:left">รายการประเมิน</th><th width="15%">คะแนน</th></tr></thead>
-                    <tbody>${detailRows}</tbody>
-                </table>
-                <p style="font-size: 11px; margin-top: 10px;">หมายเหตุ: คะแนน ADL 11 บ่งชี้กลุ่มพึ่งพิง (ติดบ้าน/ติดเตียง) ตามเกณฑ์ TA/กระทรวงสาธารณสุข ควรประเมินเพิ่มเติม.</p>
-                <div class="footer">
-                    <p style="font-size: 11px; color: #666;">ผู้สร้างและพัฒนาโปรแกรม: พว.ปนัทธพล จิตนาเรียง รพ.ดอนจาน</p>
-                    <p style="margin-top: 20px;">(ลงชื่อประเมิน).......................................................</p>
-                </div>
-                <script>window.onload = function() { window.print(); };<\/script>
-            </body>
-            </html>`;
+    if (incomplete) {
 
-        const printWin = window.open('', '_blank');
-        printWin.document.write(reportHTML);
-        printWin.document.close();
+        alert('กรุณาประเมินให้ครบถ้วน');
+
+        return;
     }
-</script>
-</body>
-</html>
 
+
+    document
+        .getElementById('result-summary')
+        .style.display = 'block';
+
+
+    document
+        .getElementById('result-summary')
+        .innerHTML = `
+
+        <div
+            class="info-card"
+            style="
+                border-left:8px solid var(--primary-dark);
+                display:block;
+            ">
+
+            <strong>
+                คำนวณเรียบร้อย
+            </strong>
+
+            <br>
+
+            คะแนนรวม
+            <b>${score}/20</b>
+
+            <br><br>
+
+            กดปุ่ม
+            <b>แสดงผลรายงาน</b>
+            เพื่อบันทึก PDF
+
+        </div>
+    `;
+
+
+    document
+        .getElementById('btnPrint')
+        .style.display = 'flex';
+
+
+    window.scrollTo({
+
+        top: document.body.scrollHeight,
+
+        behavior:'smooth'
+
+    });
+
+}
+
+
+/* =====================================================
+   GENERATE PDF
+===================================================== */
+
+function generatePDF() {
+
+    const name =
+        document
+            .getElementById('patientName')
+            .value;
+
+    const dateRaw =
+        document
+            .getElementById('evalDate')
+            .value;
+
+    const d =
+        new Date(dateRaw);
+
+    const thaiDate =
+        `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()+543}`;
+
+
+    let score = 0;
+
+    let detailRows = '';
+
+
+    questions.forEach(q => {
+
+        const v =
+            parseInt(
+                document.querySelector(
+                    `input[name="adl${q.id}"]:checked`
+                ).value
+            );
+
+        score += v;
+
+        detailRows += `
+
+            <tr>
+
+                <td>${q.id}</td>
+
+                <td style="text-align:left">
+                    ${q.title}
+                </td>
+
+                <td>${v}</td>
+
+            </tr>
+        `;
+
+    });
+
+
+    let status = "";
+    let color = "";
+    let bgColor = "";
+    let ltcText = "";
+
+
+    if (score >= 12) {
+
+        status = "ติดสังคม";
+        color = "#2e7d32";
+        bgColor = "#e8f5e9";
+
+        ltcText =
+            "แนะนำให้รักษาสุขภาพและดำรงชีวิตปกติ";
+
+    }
+
+    else if (score >= 5) {
+
+        status = "ติดบ้าน";
+        color = "#ed6c02";
+        bgColor = "#fff3e0";
+
+        ltcText =
+            "อยู่ในเกณฑ์เข้า LTC แนะนำส่งต่อศูนย์ดูแลต่อเนื่อง COC หรือดูแลระยะยาว";
+
+    }
+
+    else {
+
+        status = "ติดเตียง";
+        color = "#d32f2f";
+        bgColor = "#ffebee";
+
+        ltcText =
+            "ภาวะพึ่งพิงสูง แนะนำส่งต่อศูนย์ดูแลต่อเนื่อง COC หรือดูแลระยะยาว";
+
+    }
+
+
+    const reportHTML = `
+
+<!DOCTYPE html>
+
+<html lang="th">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>
+รายงาน ADL - ${name}
+</title>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap"
+    rel="stylesheet">
+
+<style>
+
+@page {
+    size:A4;
+    margin:1.5cm;
+}
+
+body {
+    font-family:'Sarabun',sans-serif;
+    padding:0;
+    line-height:1.3;
+    color:#000;
+    font-size:14px;
+}
+
+.header {
+    text-align:center;
+    margin-bottom:10px;
+}
+
+.header-logo {
+    width:70px;
+    height:70px;
+    object-fit:contain;
+    margin-bottom:5px;
+}
+
+.header h2 {
+    margin:0;
+    font-size:20px;
+}
+
+.header h3 {
+    margin:2px 0;
+    font-size:16px;
+}
+
+.summary-bar {
+    border-left:5px solid ${color};
+    background:${bgColor};
+    padding:10px;
+    margin:10px 0;
+    border-radius:4px;
+    font-weight:bold;
+    font-size:16px;
+    color:${color};
+}
+
+.table {
+    width:100%;
+    border-collapse:collapse;
+    margin:10px 0;
+    font-size:13px;
+}
+
+.table th,
+.table td {
+    border:1px solid #000;
+    padding:4px 8px;
+    text-align:center;
+}
+
+.table th {
+    background:#f2f2f2;
+}
+
+.footer {
+    margin-top:25px;
+    text-align:right;
+    font-size:13px;
+}
+
+h4 {
+    margin:10px 0 5px 0;
+    font-size:15px;
+}
+
+p {
+    margin:4px 0;
+}
+
+</style></head><body><div class="header"><img
+    src="${location.origin}${location.pathname.replace(/[^\/]*$/, '')}180.png"
+    class="header-logo"
+    alt="ADL Smart">
+
+<h2>
+    โรงพยาบาลดอนจาน
+</h2>
+
+<h3>
+    รายงานผลการประเมินคัดกรองผู้ป่วย LTC
+    (Long-Term Care)
+</h3>
+
+</div><p>
+<b>ชื่อผู้ป่วย:</b>
+${name}   
+
+<b>วันที่ประเมิน:</b>
+${thaiDate}
+
+</p><p><b>
+คะแนน ADL (10 ข้อ):
+</b><span
+style="
+font-size:1.1em;
+font-weight:bold;
+">
+${score}
+</span>
+
+/20
+
+</p><p><b>แปลผล:</b>
+
+<span
+style="
+color:${color};
+font-weight:bold;
+">
+
+${ltcText}
+
+</span></p><div class="summary-bar">สรุป:
+ภาวะพึ่งพา (${status})
+
+</div><h4>
+เกณฑ์การแปลผลคะแนน ADL
+(Barthel Index 10 ข้อ)
+</h4><table class="table"><thead><tr><th>คะแนนรวม</th><th>ระดับภาวะพึ่งพา</th><th>การแปลผล</th></tr></thead><tbody><tr><td>12 - 20</td><td>ระดับ 0 (ติดสังคม)</td><td style="text-align:left">
+ไม่มีภาวะพึ่งพา
+(สามารถดำรงชีวิตในสังคมได้)
+</td></tr><tr><td>5 - 11</td><td>ระดับ 1-3 (ติดบ้าน)</td><td style="text-align:left">
+ภาวะพึ่งพารุนแรงถึงปานกลาง
+(ต้องอยู่ติดบ้านเป็นส่วนใหญ่)
+</td></tr><tr><td>0 - 4</td><td>ระดับ 4 (ติดเตียง)</td><td style="text-align:left">
+ภาวะพึ่งพิง
+(ต้องอยู่ติดเตียงตลอดเวลา)
+</td></tr></tbody></table><h4>
+รายละเอียดคะแนน ADL 10 ข้อ
+</h4><table class="table"><thead><tr><th width="10%">
+ข้อที่
+</th><th style="text-align:left">
+รายการประเมิน
+</th><th width="15%">
+คะแนน
+</th></tr></thead><tbody>${detailRows}
+
+</tbody></table><p style="font-size:11px;margin-top:10px;">หมายเหตุ:
+คะแนน ADL 11 บ่งชี้กลุ่มพึ่งพิง
+(ติดบ้าน/ติดเตียง)
+ตามเกณฑ์ TA/กระทรวงสาธารณสุข
+ควรประเมินเพิ่มเติม.
+
+</p><div class="footer"><p style="font-size:11px;color:#666;">ผู้สร้างและพัฒนาโปรแกรม:
+พว.ปนัทธพล จิตนาเรียง
+รพ.ดอนจาน
+
+</p><p style="margin-top:20px;">(ลงชื่อประเมิน)
+.......................................................
+
+</p></div><script>
+
+window.onload = function() {
+
+    window.print();
+
+};
+
+<\/script>
+
+
+</body>
+
+</html>
+`;
+
+
+    const printWin =
+        window.open('', '_blank');
+
+
+    printWin.document.write(reportHTML);
+
+    printWin.document.close();
+
+}
+
+
+/* =====================================================
+   PWA INSTALL GUIDE
+===================================================== */
+
+(function() {
+
+    const box =
+        document.getElementById('installBox');
+
+    const btn =
+        document.getElementById('installBtn');
+
+    const text =
+        document.getElementById('installText');
+
+    const steps =
+        document.getElementById('installSteps');
+
+
+    const standalone =
+        window.matchMedia(
+            '(display-mode: standalone)'
+        ).matches
+        ||
+        window.navigator.standalone === true;
+
+
+    if (standalone) return;
+
+
+    const ua =
+        navigator.userAgent || "";
+
+
+    const isIOS =
+        /iphone|ipad|ipod/i.test(ua)
+        ||
+        (
+            navigator.platform === 'MacIntel'
+            &&
+            navigator.maxTouchPoints > 1
+        );
+
+
+    const isAndroid =
+        /android/i.test(ua);
+
+
+    const inLine =
+        /Line/i.test(ua);
+
+
+    if (!isIOS && !isAndroid) return;
+
+
+    btn.onclick = function() {
+
+        steps.classList.toggle('show');
+
+    };
+
+
+    if (isIOS) {
+
+        text.innerHTML =
+            '<b>เพิ่ม ADL Smart ลงหน้าจอ</b><br>' +
+            'ติดตั้งเป็นไอคอนบนหน้าจอ iPhone';
+
+
+        steps.innerHTML = `
+
+            <ol>
+
+                <li>
+                    เปิดเว็บไซต์นี้ด้วย
+                    <b>Safari</b>
+                </li>
+
+                <li>
+                    กดปุ่ม
+                    <b>แชร์ ⬆︎</b>
+                    ด้านล่าง
+                </li>
+
+                <li>
+                    เลือก
+                    <b>เพิ่มลงในหน้าจอโฮม</b>
+                </li>
+
+                <li>
+                    กด
+                    <b>เพิ่ม</b>
+                </li>
+
+                <li>
+                    จะมีไอคอน
+                    <b>ADL Smart</b>
+                    พร้อมโลโก้บนหน้าจอ
+                </li>
+
+            </ol>
+
+        `;
+
+    }
+
+
+    else if (isAndroid) {
+
+        if (inLine) {
+
+            text.innerHTML =
+                '<b>เปิดใน Chrome ก่อน</b><br>' +
+                'เพื่อเพิ่ม ADL Smart ลงหน้าจอ';
+
+
+            steps.innerHTML = `
+
+                <ol>
+
+                    <li>
+                        กด
+                        <b>⋮</b>
+                        ใน LINE
+                    </li>
+
+                    <li>
+                        เลือก
+                        <b>เปิดในเบราว์เซอร์อื่น</b>
+                    </li>
+
+                    <li>
+                        เลือก
+                        <b>Chrome</b>
+                    </li>
+
+                    <li>
+                        กด
+                        <b>⋮</b>
+                        มุมขวาบนของ Chrome
+                    </li>
+
+                    <li>
+                        เลือก
+                        <b>เพิ่มลงในหน้าจอหลัก</b>
+                    </li>
+
+                    <li>
+                        กด
+                        <b>เพิ่ม</b>
+                    </li>
+
+                </ol>
+
+            `;
+
+        }
+
+        else {
+
+            text.innerHTML =
+                '<b>เพิ่ม ADL Smart ลงหน้าจอ</b><br>' +
+                'เปิดใช้งานได้ง่ายจากไอคอน';
+
+
+            steps.innerHTML = `
+
+                <ol>
+
+                    <li>
+                        เปิดเว็บไซต์ด้วย
+                        <b>Google Chrome</b>
+                    </li>
+
+                    <li>
+                        กด
+                        <b>⋮</b>
+                        มุมขวาบน
+                    </li>
+
+                    <li>
+                        เลือก
+                        <b>เพิ่มลงในหน้าจอหลัก</b>
+                    </li>
+
+                    <li>
+                        กด
+                        <b>เพิ่ม</b>
+                    </li>
+
+                    <li>
+                        จะได้ไอคอน
+                        <b>ADL Smart</b>
+                        พร้อมโลโก้
+                    </li>
+
+                </ol>
+
+            `;
+
+        }
+
+    }
+
+
+    box.classList.add('show');
+
+})();
+
+
+/* =====================================================
+   SERVICE WORKER
+===================================================== */
+
+if ('serviceWorker' in navigator) {
+
+    window.addEventListener('load', () => {
+
+        navigator.serviceWorker
+            .register('./sw.js')
+            .catch(error => {
+
+                console.log(
+                    'Service Worker error:',
+                    error
+                );
+
+            });
+
+    });
+
+}
+
+</script></body>
+</html>
