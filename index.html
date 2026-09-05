@@ -4,20 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>ADL Smart Check </title>
+    <title>ADL Smart Assessment - Don Jan Hospital</title>
 
     <!-- =====================================================
          PWA & APP ICON
     ====================================================== -->
 
+    <!-- PWA Manifest -->
     <link rel="manifest" href="./manifest.json">
 
+    <!-- Android / Chrome -->
     <meta name="theme-color" content="#0288d1">
     <meta name="mobile-web-app-capable" content="yes">
 
+    <!-- Android Icons -->
     <link rel="icon" type="image/png" sizes="192x192" href="./192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="./512.png">
 
+    <!-- iPhone / iPad -->
     <link rel="apple-touch-icon" sizes="180x180" href="./180.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -32,6 +36,7 @@
         rel="stylesheet"
     />
 
+    <!-- Font Awesome -->
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -373,7 +378,9 @@
             ADL Smart Check
         </h1>
 
-        
+        <p>
+            โรงพยาบาลดอนจาน จังหวัดกาฬสินธุ์
+        </p>
 
     </div>
 
@@ -475,7 +482,7 @@
         <br><br>
 
         พัฒนาโดย
-        พว.ปนัทธพล จิตนาเรียง พยาบาลวิชาชีพชำนาญการ
+        พว.ปนัทธพล จิตนาเรียง
         รพ.ดอนจาน
 
     </footer>
@@ -932,6 +939,13 @@ body {
     margin-bottom:10px;
 }
 
+.header-logo {
+    width:70px;
+    height:70px;
+    object-fit:contain;
+    margin-bottom:5px;
+}
+
 .header h2 {
     margin:0;
     font-size:20px;
@@ -994,8 +1008,14 @@ p {
 
 <div class="header">
 
+<img
+    src="${location.origin}${location.pathname.replace(/[^\/]*$/, '')}180.png"
+    class="header-logo"
+    alt="ADL Smart"
+>
+
 <h2>
-    ADL Smart Check
+    โรงพยาบาลดอนจาน
 </h2>
 
 <h3>
