@@ -1,32 +1,37 @@
-{
-"name": "ADL Smart Assessment - Don Jan Hospital",
-"short_name": "ADL Smart",
-"description": "ระบบประเมินความสามารถในการทำกิจวัตรประจำวัน ADL สำหรับงาน Long-Term Care โรงพยาบาลดอนจาน",
-"lang": "th",
-"start_url": "./index.html",
-"scope": "./",
-"display": "standalone",
-"orientation": "portrait",
-"background_color": "#f4f7f9",
-"theme_color": "#0288d1",
-"icons": [
-{
-"src": "./180.png",
-"sizes": "180x180",
-"type": "image/png",
-"purpose": "any"
-},
-{
-"src": "./192.png",
-"sizes": "192x192",
-"type": "image/png",
-"purpose": "any"
-},
-{
-"src": "./512.png",
-"sizes": "512x512",
-"type": "image/png",
-"purpose": "any"
-}
-]
-}
+const CACHE_NAME = "adl-smart-v2";
+
+const FILES = [
+  "./",
+  "./index.html",
+  "./manifest.json",
+  "./180.png",
+  "./192.png",
+  "./512.png"
+];
+
+self.addEventListener("install", event => {
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(FILES))
+      .then(() => self.skipWaiting())
+  );
+});
+
+self.addEventListener("activate", event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(
+        keys
+          .filter(key => key !== CACHE_NAME)
+          .map(key => caches.delete(key))
+      )
+    ).then(() => self.clients.claim())
+  );
+});
+
+self.addEventListener("fetch", event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => response || fetch(event.request))
+  );
+});
